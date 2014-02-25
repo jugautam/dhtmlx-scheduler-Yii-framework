@@ -5,25 +5,26 @@ This is the module to integrate with Yii framework. To integrate with Yii you ne
 
 The plugin requied files included in DefaultController, the path has been adjusted from modules directory
 
-require_once(dirname(__FILE__) . "/../../../../dhtmlx/connector/db_phpyii.php");
-require_once(dirname(__FILE__) . "/../../../../dhtmlx/connector/scheduler_connector.php");
+```require_once(dirname(__FILE__) . "/../../../../dhtmlx/connector/db_phpyii.php");
+
+```require_once(dirname(__FILE__) . "/../../../../dhtmlx/connector/scheduler_connector.php");
 
 In view default/index.php, include the script and stylesheet
 
-<script src="<?php echo Yii::app()->baseUrl . '/dhtmlx/dhtmlxscheduler.js' ?>" type="text/javascript" charset="utf-8"></script>
-    <script src="<?php echo Yii::app()->baseUrl . '/dhtmlx/ext/dhtmlxscheduler_timeline.js' ?>" type="text/javascript" charset="utf-8"></script>
-    /** include this script only if you want day clickable link
-    * remove the configuration if you dont want clickable link on day:
-    * scheduler.config.active_link_view = "day";
-    */
-    <script src="<?php echo Yii::app()->baseUrl . '/dhtmlx/ext/dhtmlxscheduler_active_links.js' ?>" type="text/javascript" charset="utf-8"></script>
-    <script src="<?php echo Yii::app()->baseUrl . '/dhtmlx/ext/dhtmlxscheduler_pdf.js' ?>" type="text/javascript" charset="utf-8"></script>
+```<script src="<?php echo Yii::app()->baseUrl . '/dhtmlx/dhtmlxscheduler.js' ?>" type="text/javascript" charset="utf-8"></script>
+```<script src="<?php echo Yii::app()->baseUrl . '/dhtmlx/ext/dhtmlxscheduler_timeline.js' ?>" type="text/javascript" charset="utf-8"></script>
+/** include this script only if you want day clickable link
+* remove the configuration if you dont want clickable link on day:
+* scheduler.config.active_link_view = "day";
+*/
+```<script src="<?php echo Yii::app()->baseUrl . '/dhtmlx/ext/dhtmlxscheduler_active_links.js' ?>" type="text/javascript" charset="utf-8"></script>
+```<script src="<?php echo Yii::app()->baseUrl . '/dhtmlx/ext/dhtmlxscheduler_pdf.js' ?>" type="text/javascript" charset="utf-8"></script>
 
-<link rel="stylesheet" href="<?php echo Yii::app()->baseUrl . '/dhtmlx/dhtmlxscheduler.css' ?>" type="text/css" title="no title" charset="utf-8">
+```<link rel="stylesheet" href="<?php echo Yii::app()->baseUrl . '/dhtmlx/dhtmlxscheduler.css' ?>" type="text/css" title="no title" charset="utf-8">
 
 This script file is included to configure the dhtmlx scheduler plugin and is called on body onload:
 
-<script>
+```<script>
 
 function init() {
     
@@ -114,9 +115,9 @@ var html = function(id) {return document.getElementById(id);}; //just a helper
     
 </script>
 
-Inside Body include this div:
+##Inside Body include this div:
 
-<div id="scheduler_here" class="dhx_cal_container" style='padding:550px;'>
+```<div id="scheduler_here" class="dhx_cal_container" style='padding:550px;'>
     <div class="dhx_cal_navline">
         <div id="export_pdf" class="dhx_cal_export pdf" onclick="scheduler.toPDF('http://dhtmlxscheduler.appspot.com/export/pdf', 'color')" title="Export to PDF"> </div>
         <div class="dhx_cal_prev_button">&nbsp;</div>
@@ -135,9 +136,9 @@ Inside Body include this div:
     <div class="dhx_cal_data"></div>
 </div>
 
-Custom Form to include inside body tag. Lightbox popup this form
+##Custom Form to include inside body tag. Lightbox popup this form
 
-<div id="my_form">
+```<div id="my_form">
     <?php echo CHtml::label('Title', 'text'); ?>
     <?php echo CHtml::textField('text', ''); ?>
 
@@ -148,10 +149,10 @@ Custom Form to include inside body tag. Lightbox popup this form
 </div>
 
 
-Inside Default Controller
+##Inside Default Controller
 
 /**
-this action is used to render view
+    this action is used to render view
 */
 public function actionIndex()
 {
@@ -196,7 +197,7 @@ public function actionScheduler_data()
 /**
 * save the data to database
 */
-public function actionScheduler_save()
+```public function actionScheduler_save()
 {
     //this action will be used for data saving
     //we need to provide a model as first parameter
