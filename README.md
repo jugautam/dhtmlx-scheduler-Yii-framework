@@ -114,7 +114,7 @@ var html = function(id) {return document.getElementById(id);}; //just a helper
     
 </script>
 
-In Body 
+Inside Body include this div:
 
 <div id="scheduler_here" class="dhx_cal_container" style='padding:550px;'>
     <div class="dhx_cal_navline">
@@ -134,3 +134,96 @@ In Body
     <div class="dhx_cal_header"></div>
     <div class="dhx_cal_data"></div>
 </div>
+
+Custom Form to include inside body tag. Lightbox popup this form
+
+<div id="my_form">
+    <?php echo CHtml::label('Title', 'text'); ?>
+    <?php echo CHtml::textField('text', ''); ?>
+
+    <br><br>
+    <input type="button" name="save" value="Save" id="save" style='width:100px;' onclick="save_form()">
+    <input type="button" name="close" value="Close" id="close" style='width:100px;' onclick="close_form()">
+    <input type="button" name="delete" value="Delete" id="delete" style='width:100px;' onclick="delete_event()">
+</div>
+
+
+Inside Default Controller
+
+/**
+this action is used to render view
+*/
+public function actionIndex()
+{
+    $client_data = $this->getClients();
+    $user_data = $this->getUsers();
+
+    $this->render('index', array('client_data' => $client_data, 'user_data' => $user_data));
+}
+
+/**
+* load the data to populate the calendar, called from view(index.php)
+*/
+public function actionScheduler_data()
+{
+    $dbType = "PHPYii";
+
+    $data = Calendar::model()->findAll();
+
+    $scheduler = new SchedulerConnector($data, "PHPYii");
+    
+    # first parameter - default for Yii
+    # second parmeter - id is primary key
+    # third parameter - start_date, end_date, text // include as many to get data in client side
+    $scheduler->configure("-", "id", "start_date, end_date, text, assignedTo"); // first parameter is default for yii
+
+    // format data before populating data in calendar
+    function formatTimestamp($action) {
+
+        $ds = $action->get_value("start_date");
+        $de = $action->get_value("end_date");
+
+        $action->set_value("start_date", date('Y-m-d H:i', $ds));
+        $action->set_value("end_date", date('Y-m-d H:i', $de));
+    }
+
+    $scheduler->event->attach("beforeRender","formatTimestamp");
+
+
+    $scheduler->render();
+}
+
+/**
+* save the data to database
+*/
+public function actionScheduler_save()
+{
+    //this action will be used for data saving
+    //we need to provide a model as first parameter
+
+    $data = Calendar::model();
+
+    $scheduler = new SchedulerConnector($data, "PHPYii");
+    $scheduler->configure("-", "id", "start_date, end_date, text, assignedTo");
+
+    function beforeSaving($action) {
+
+        $userId = Yii::app()->user->id;
+
+        $ds = $action->get_value("start_date");
+        $de = $action->get_value("end_date");
+
+        $action->set_value("start_date", strtotime($ds));
+        $action->set_value("end_date", strtotime($de));
+        
+        # Do custom saving of data
+        
+        $action->success(); // after saving terminate the process
+        }
+
+    }
+
+    $scheduler->event->attach("beforeProcessing","beforeSaving"); // event triggered before Processing
+
+    $scheduler->render();
+}
